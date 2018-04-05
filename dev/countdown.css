@@ -1,0 +1,39 @@
+* {
+    margin: 0rem;
+    padding: 0rem;
+}
+#countdownWrapper {
+    font-size: 100%;
+    width: 80%;
+    margin: auto;
+}
+#countdown {
+    /* center inner inline blockes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.digitWrapper, .dividerWrapper {
+    display: inline-block;
+    margin: 0.3%;
+}
+.digitWrapper {
+    width: 10%;
+}
+.digit {
+    display: block;
+    background-color: #000000;
+    padding-top: 15%;
+    padding-bottom: 15%;
+    border-radius: 15%;
+    text-align: center;
+    color: #ffffff;
+    font-size: 600%;
+    overflow: hidden;
+}
+.divider {
+    display: block;
+    text-align: center;
+    color: #000000;
+    font-size: 600%;
+}

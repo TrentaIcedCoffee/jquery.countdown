@@ -5,174 +5,23 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
                 crossorigin="anonymous"></script>
+        <script src="./countdown.js"></script>
+        <link rel="stylesheet" href="./countdown.css">
         <title>demo - countdown</title>
-        <style>
-            * {
-                margin: 0rem;
-                padding: 0rem;
-            }
-            html, body {
-                background: #dddddd;
-            }
-            #countdownWrapper {
-                font-size: 100%;
-                width: 80%;
-                margin: auto;
-            }
-            #countdown {
-                /* center inner inline blockes */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .digitWrapper, .dividerWrapper {
-                display: inline-block;
-                margin: 0.3%;
-            }
-            .digitWrapper {
-                width: 10%;
-            }
-            .digit {
-            	display: block;
-            	background-color: #000000;
-                padding-top: 15%;
-                padding-bottom: 15%;
-            	border-radius: 15%;
-            	text-align: center;
-            	color: #ffffff;
-                font-size: 600%;
-                overflow: hidden;
-            }
-            .divider {
-                display: block;
-            	text-align: center;
-            	color: #000000;
-                font-size: 600%;
-            }
-        </style>
     </head>
     <body>
         <div id="countdownWrapper">
-            <!-- <div id="countdown">
-                <div class='digitWrapper'><span class="digit">9</span></div>
-                <div class='digitWrapper'><span class="digit">9</span></div>
-                <div class='dividerWrapper'><span class="divider">:</span></div>
-                <div class='digitWrapper'><span class="digit">2</span></div>
-                <div class='digitWrapper'><span class="digit">3</span></div>
-                <div class='dividerWrapper'><span class="divider">:</span></div>
-                <div class='digitWrapper'><span class="digit">5</span></div>
-                <div class='digitWrapper'><span class="digit">9</span></div>
-                <div class='dividerWrapper'><span class="divider">:</span></div>
-                <div class='digitWrapper'><span class="digit">5</span></div>
-                <div class='digitWrapper'><span class="digit">9</span></div>
-            </div> -->
         </div>
     </body>
     <script>
-        'use strict'
-
-        function divmod(a, b) {
-            return [Math.floor(a / b), a % b];
-        }
-
-        function Time(time) {
-            this.timeObj = time;
-        }
-        Time.fields = ['days', 'hours', 'minutes', 'seconds'];
-        Time.maxDigit = [9, 9, 2, 3, 5, 9, 5, 9];
-
-        function countDownOf(numArray) {
-            function digitOf(num) {
-                return `<div class="digitWrapper"><span class="digit">${num}</span></div>`;
-            }
-            function divider() {
-                return '<div class="dividerWrapper"><span class="divider">:</span></div>';
-            }
-            var ret = [];
-            ret.push('<div id="countdown">');
-            var i = 0;
-            for (var num of numArray) {
-                ret.push(digitOf(num));
-                i += 1;
-                if (i == 2) {
-                    ret.push(divider());
-                    i = 0;
-                }
-            }
-            ret.pop();
-            ret.push('</div>')
-            return ret.join('');
-        }
-
-        function renderMove(move) {
-            var digit = $(`.digit:nth(${move.pos})`);
-            var newDigit = $('<span>',{
-                'class':'digit',
-                css:{
-                    top: '-100%'
-                },
-                html: move.toDigit
-            });
-            digit.before(newDigit).removeClass('static').animate({}, 'fast', function() {
-                digit.remove();
-            });
-    		newDigit.delay(100).animate({top: 0}, 'fast', function() {
-                newDigit.addClass('static');
-            });
-        }
-
-        function Countdown(time, gap, div, callback) {
-            function numArrayOf(time) {
-                var numArray = [];
-                Time.fields.forEach(function(field) {
-                    numArray.push(...divmod(time.timeObj[field], 10));
-                });
-                return numArray;
-            }
-            this.time = time;
-            this.gap = gap;
-            this.numArray = numArrayOf(time);
-            var numArrayHandler = this.numArray;
-            div.html(countDownOf(this.numArray));
-            var tickHandler = function() {
-                var isEnd = false;
-                function moveOf(pos, toDigit) {
-                    return {pos: pos, toDigit: toDigit};
-                }
-                function tickHelper(pos) {
-                    if (numArrayHandler[pos] == 0) {
-                        numArrayHandler[pos] = Time.maxDigit[pos];
-                        moves.push(moveOf(pos, Time.maxDigit[pos]));
-                        if (pos == 0) {
-                            isEnd = true;
-                            return; // 0 -> max
-                        }
-                        tickHelper(pos - 1);
-                    } else {
-                        numArrayHandler[pos] -= 1;
-                        moves.push(moveOf(pos, numArrayHandler[pos]));
-                    }
-                }
-                var moves = [];
-                tickHelper(7);
-                if (isEnd) {
-                    console.log('STOP');
-                    return;
-                }
-                console.log(numArrayHandler.join(''));
-                moves.forEach(renderMove);
-                setTimeout(tickHandler, gap);
-            };
-            this.tick = tickHandler;
-        }
-
-        function debug() {
-            var div = $('#countdownWrapper');
-            var start = {days: 0, hours: 0, minutes: 0, seconds: 3};
-            var countdown = new Countdown(new Time(start), 1000, div, function() {
-                console.log('STOP');
-            });
-            countdown.tick();
-        }
+        var countDown = new Countdown(new Time({
+            days: 0,
+            hours: 0,
+            minutes: 10,
+            seconds: 3
+        }), 1000, $('#countdownWrapper'), function() {
+            console.log('STOP');
+        });
+        countDown.tick();
     </script>
 </html>
