@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <title>demo - countdown</title>
+    </head>
+    <body>
+        <div id="wrapper" class="">
+
+        </div>
+    </body>
+    <script>
+        'use strict'
+        var div = $('#wrapper');
+        var start = {days: 3, hours: 4, minutes: 29, seconds: 12};
+
+        function divmod(a, b) {
+            return [Math.floor(a / b), a % b];
+        }
+
+        function Time(time) {
+            this.timeObj = time;
+        }
+        Time.fields = ['days', 'hours', 'minutes', 'seconds'];
+        Time.maxDigit = [9, 9, 2, 3, 5, 9, 5, 9];
+
+        function Countdown(time, callback) {
+            function numArrayOf(time) {
+                var numArray = [];
+                Time.fields.forEach(function(field) {
+                    numArray.push(...divmod(time.timeObj[field], 10));
+                });
+                return numArray;
+            }
+            this.time = time;
+            this.numArray = numArrayOf(time);
+            this.tick = function() {
+                function moveOf(pos, toDigit) {
+                    return {pos: pos, toDigit: toDigit};
+                }
+                function tickHelper(pos) {
+                    if (this.numArray[pos] == 0) {
+                        moves.push(moveOf(Time.maxDigit[pos]));
+                        tickHelper(pos - 1);
+                    } else {
+                        moves.push(moveOf(this.numArray[pos] - 1));
+                    }
+                }
+                var moves = [];
+                tickHelper(7);
+                console.log(this.numArray);
+                return moves;
+            };
+        }
+    </script>
+</html>
