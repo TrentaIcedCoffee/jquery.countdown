@@ -8,14 +8,12 @@
         <title>demo - countdown</title>
     </head>
     <body>
-        <div id="wrapper" class="">
+        <div id="wrapper" class="countdown">
 
         </div>
     </body>
     <script>
         'use strict'
-        var div = $('#wrapper');
-        var start = {days: 3, hours: 4, minutes: 29, seconds: 12};
 
         function divmod(a, b) {
             return [Math.floor(a / b), a % b];
@@ -27,7 +25,7 @@
         Time.fields = ['days', 'hours', 'minutes', 'seconds'];
         Time.maxDigit = [9, 9, 2, 3, 5, 9, 5, 9];
 
-        function Countdown(time, callback) {
+        function Countdown(time, gap, div, callback) {
             function numArrayOf(time) {
                 var numArray = [];
                 Time.fields.forEach(function(field) {
@@ -36,24 +34,53 @@
                 return numArray;
             }
             this.time = time;
+            this.gap = gap;
             this.numArray = numArrayOf(time);
-            this.tick = function() {
+            $(div).html(
+                '<span style=''>\
+
+                </span>'
+            );
+            var numArrayHandler = this.numArray;
+            var tickHandler = function() {
+                var isEnd = false;
                 function moveOf(pos, toDigit) {
                     return {pos: pos, toDigit: toDigit};
                 }
                 function tickHelper(pos) {
-                    if (this.numArray[pos] == 0) {
-                        moves.push(moveOf(Time.maxDigit[pos]));
+                    if (numArrayHandler[pos] == 0) {
+                        numArrayHandler[pos] = Time.maxDigit[pos];
+                        moves.push(moveOf(pos, Time.maxDigit[pos]));
+                        if (pos == 0) {
+                            isEnd = true;
+                            return; // 0 -> max
+                        }
                         tickHelper(pos - 1);
                     } else {
-                        moves.push(moveOf(this.numArray[pos] - 1));
+                        numArrayHandler[pos] -= 1;
+                        moves.push(moveOf(pos, numArrayHandler[pos] - 1));
                     }
                 }
                 var moves = [];
                 tickHelper(7);
-                console.log(this.numArray);
-                return moves;
+                if (isEnd) {
+                    console.log('STOP');
+                    return;
+                }
+                console.log(numArrayHandler.join(''));
+                // render moves
+                setTimeout(tickHandler, gap);
             };
+            this.tick = tickHandler;
+        }
+
+        function debug() {
+            var div = $('#wrapper');
+            var start = {days: 0, hours: 0, minutes: 0, seconds: 2};
+            var countdown = new Countdown(new Time(start), 1000, div, function() {
+                console.log('STOP');
+            });
+            countdown.tick();
         }
     </script>
 </html>
