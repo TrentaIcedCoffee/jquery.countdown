@@ -88,7 +88,7 @@ function Countdown(time, gap, div, callback) {
             console.log('STOP');
             return;
         }
-        console.log(numArrayHandler.join(''));
+        // console.log(numArrayHandler.join(''));
         moves.forEach(renderMove);
         setTimeout(tickHandler, gap);
     };
