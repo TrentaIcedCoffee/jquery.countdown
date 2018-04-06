@@ -1,0 +1,21 @@
+{
+    "name": "countdown",
+    "title": "Countdown",
+    "description": "jQuery plugin for countdowns and timing support.",
+    "keywords": ["countdown", "timing"],
+    "version": "1.0.0",
+    "author": {
+        "name": "Xin Jin",
+        "email": "jin@ucdavis.edu"
+    },
+    "licenses": [{
+        "type": "GPL-2.0",
+        "url": "https://github.com/TrentaIcedCoffee/jquery.countdown/blob/master/LICENSE"
+    }],
+    "dependencies": {
+        "jquery": ">=3.0"
+    },
+    "bugs": "https://github.com/TrentaIcedCoffee/jquery.countdown/issues",
+    "homepage": "https://github.com/TrentaIcedCoffee/jquery.countdown/",
+    "docs": "https://github.com/TrentaIcedCoffee/jquery.countdown/"
+}
